@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  backend:
+    restart: always
+
+  database:
+    restart: always
+
+  frontend:
+    restart: always
+
+  reverse_proxy:
+    restart: always
+    volumes:
+      - "./Caddyfile.prod:/etc/caddy/Caddyfile"

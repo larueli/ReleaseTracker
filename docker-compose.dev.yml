@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  backend:
+    image: larueli/php-symfony-base-image:8.2-dev
+    user: "${UID}:${GID}"
+    userns_mode: host
+    environment:
+      DATABASE_URL: "postgresql://app:app@database:5432/app?serverVersion=14&charset=utf8"
+      MAILER_DSN: "smtp://mailer:1025"
+      TRUSTED_PROXIES: "0.0.0.0/0"
+      PHP_IDE_CONFIG: "serverName=docker"
+      XDEBUG_MODE: "develop,debug" # profile,coverage
+      XDEBUG_CONFIG: "client_host=host.docker.internal"
+      XDEBUG_TRIGGER: "yes"
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/.docker/launch.sh:/docker-entrypoint-init.d/launch.sh
+    #ports:
+    #  - "8000:8080"
+    #extra_hosts:
+    #  - host.docker.internal:${HOST_IP:-172.17.0.1}
+
+  reverse_proxy:
+    volumes:
+      - "./Caddyfile.dev:/etc/caddy/Caddyfile"
+
+  #database:
+  #  ports:
+  #    - "5432:5432"
+
+  adminer:
+    image: adminer
+    environment:
+      ADMINER_DEFAULT_DB_HOST: database
+      ADMINER_DEFAULT_DB_NAME: app
+      ADMINER_DESIGN: lucas-sandery
+    #ports:
+    #  - "8080:8080"
+
+  mailer:
+    image: sj26/mailcatcher
+    environment:
+      HTTPPATH: "mailer"
+    command:
+      - "--ip"
+      - "0.0.0.0"
+      - "--http-path"
+      - "mailer"
+    #ports:
+    #  - "8081:1080"
+
+  frontend:
+    image: larueli/node-base-image:18
+    user: "${UID}:${GID}"
+    userns_mode: host
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./frontend:/app
+      - ./frontend/.docker/launch.sh:/docker-entrypoint-init.d/launch.sh
+    #ports:
+    #  - "8000:8080"
+    #extra_hosts:
+    #  - host.docker.internal:${HOST_IP:-172.17.0.1}

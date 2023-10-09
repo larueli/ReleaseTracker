@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  backend:
+    image: larueli/backend
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+      TZ: Europe/Paris
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: postgres:15.4
+    networks:
+      - default
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_USER: app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - database-data:/var/lib/postgresql/data:rw
+
+  frontend:
+    image: larueli/frontend
+
+  reverse_proxy:
+    image: caddy:2.7.4
+    ports:
+      - "8080:8080"
+
+volumes:
+  database-data:

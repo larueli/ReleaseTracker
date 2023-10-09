@@ -1,0 +1,19 @@
+{
+
+auto_https {CADDY_ENABLE_HTTPS:off}
+
+}
+
+your-domain.tld {
+    handle /api* {
+        reverse_proxy http://backend:8080
+    }
+
+    handle {
+        reverse_proxy http://frontend:3000
+    }
+
+    log {
+        output stdout
+    }
+}

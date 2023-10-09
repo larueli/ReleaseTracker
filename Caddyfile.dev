@@ -1,0 +1,28 @@
+{
+
+auto_https off
+
+}
+
+http://:8080 {
+    handle /api* {
+        reverse_proxy http://backend:8080
+    }
+
+    handle /mailer* {
+        reverse_proxy http://mailer:1080
+    }
+
+    handle /adminer* {
+        reverse_proxy http://adminer:8080
+    }
+
+    handle {
+        reverse_proxy http://frontend:5173
+    }
+
+    log {
+        output stdout
+    }
+}
+
