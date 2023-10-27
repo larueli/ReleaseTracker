@@ -5,16 +5,22 @@ auto_https off
 }
 
 http://:8080 {
-    handle /api* {
-        reverse_proxy http://backend:8080
+    handle_path /api* {
+        reverse_proxy http://backend:8080 {
+            header_up X-Forwarded-Prefix "/api"
+        }
     }
 
     handle /mailer* {
-        reverse_proxy http://mailer:1080
+        reverse_proxy http://mailer:1080 {
+#            header_up X-Forwarded-Prefix "/mailer"
+        }
     }
 
-    handle /adminer* {
-        reverse_proxy http://adminer:8080
+    handle_path /adminer* {
+        reverse_proxy http://adminer:8080 {
+            header_up X-Forwarded-Prefix "/adminer"
+        }
     }
 
     handle {

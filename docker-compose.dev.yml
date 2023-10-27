@@ -9,13 +9,14 @@ services:
       DATABASE_URL: "postgresql://app:app@database:5432/app?serverVersion=14&charset=utf8"
       MAILER_DSN: "smtp://mailer:1025"
       TRUSTED_PROXIES: "0.0.0.0/0"
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
       PHP_IDE_CONFIG: "serverName=docker"
       XDEBUG_MODE: "develop,debug" # profile,coverage
       XDEBUG_CONFIG: "client_host=host.docker.internal"
       XDEBUG_TRIGGER: "yes"
     volumes:
-      - ./backend:/var/www/html
-      - ./backend/.docker/launch.sh:/docker-entrypoint-init.d/launch.sh
+      - ./ReleaseTracker-backend:/var/www/html
+      - ./ReleaseTracker-backend/.docker/launch.sh:/docker-entrypoint-init.d/launch.sh
     #ports:
     #  - "8000:8080"
     #extra_hosts:
@@ -57,8 +58,8 @@ services:
     environment:
       NODE_ENV: development
     volumes:
-      - ./frontend:/app
-      - ./frontend/.docker/launch.sh:/docker-entrypoint-init.d/launch.sh
+      - ./ReleaseTracker-frontend:/app
+      - ./ReleaseTracker-frontend/.docker/launch.sh:/docker-entrypoint-init.d/launch.sh
     #ports:
     #  - "8000:8080"
     #extra_hosts:

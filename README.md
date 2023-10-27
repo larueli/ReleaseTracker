@@ -17,3 +17,9 @@ https://github.com/symfony-cli/symfony-cli/blob/2ba4c375ecb314a65461a7100285e924
 https://vitejs.dev/guide/
 
 UID=${UID} GID=${GID} docker compose -f docker-compose.yml -f docker-compose.dev.yml
+
+
+composer require api
+composer require symfony/apache-pack
+composer require webonyx/graphql-php
+composer require gedmo/doctrine-extensions
