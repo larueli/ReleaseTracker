@@ -23,3 +23,5 @@ composer require api
 composer require symfony/apache-pack
 composer require webonyx/graphql-php
 composer require gedmo/doctrine-extensions
+composer require symfony/uid
+composer require symfony/finder

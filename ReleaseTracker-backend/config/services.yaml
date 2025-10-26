@@ -4,6 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.from_email.address: "%env(APP_FROM_EMAIL_ADDRESS)%"
+    app.from_email.name: "%env(APP_FROM_EMAIL_NAME)%"
 
 services:
     # default configuration for services in *this* file
@@ -22,3 +24,14 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\MailSender:
+        arguments:
+            $fromEmailAddress: "%app.from_email.address%"
+            $fromEmailName: "%app.from_email.name%"
+
+    gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]

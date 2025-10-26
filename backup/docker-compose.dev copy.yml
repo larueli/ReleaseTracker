@@ -3,8 +3,8 @@ version: '3'
 services:
   backend:
     image: larueli/php-symfony-base-image:8.3-dev
-    #user: "${UID}:${GID}"
-    user: "0:0"
+    user: "${UID}:${GID}"
+    userns_mode: host
     environment:
       DATABASE_URL: "postgresql://app:app@database:5432/app?serverVersion=14&charset=utf8"
       MAILER_DSN: "smtp://mailer:1025"
@@ -15,7 +15,7 @@ services:
       XDEBUG_CONFIG: "client_host=host.docker.internal"
       XDEBUG_TRIGGER: "yes"
     volumes:
-      - ./ReleaseTracker-backend:/var/www/html:cached
+      - ./ReleaseTracker-backend:/var/www/html
       - ./ReleaseTracker-backend/.docker/launch.sh:/docker-entrypoint-init.d/launch.sh
     #ports:
     #  - "8000:8080"
@@ -52,9 +52,9 @@ services:
     #  - "8081:1080"
 
   frontend:
-    image: larueli/node-base-image:20
-    user: "0:0"
-    #user: "${UID}:${GID}"
+    image: larueli/node-base-image:18
+    user: "${UID}:${GID}"
+    userns_mode: host
     environment:
       NODE_ENV: development
     volumes:

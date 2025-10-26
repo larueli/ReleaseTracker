@@ -1,4 +1,5 @@
-/.vscode
-/.idea
-/.pnpm-store
-
+.vscode/
+.idea/
+ReleaseTracker-frontend/.pnpm-store/
+ReleaseTracker-frontend/node_modules/
+ReleaseTracker-backend/vendor/
